@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from app.forms import *
+from django.http import HttpResponse
+
 # Create your views here.
 def insert_topic(request):
     TMFO=TopicModelForm()
@@ -17,8 +18,11 @@ def insert_webpage(request):
     d={'WMFO':WMFO}
     if request.method=='POST':
         WMFOD=WebpageModelForm(request.POST)
-        WMFOD.save()
-        return HttpResponse('WMFOD is inserted')
+        if WMFOD.is_valid():
+            WMFOD.save()
+            return HttpResponse('data valid')
+        else:
+            return HttpResponse('not valid')   
 
     return render(request,'insert_webpage.html',d)
 
